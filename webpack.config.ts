@@ -1,9 +1,15 @@
 import path from "path"
 import { CleanWebpackPlugin } from "clean-webpack-plugin"
 import htmlWebpackPlugin from "html-webpack-plugin"
+import terserWebpackPlugin from "terser-webpack-plugin"
+import webpack from 'webpack'
+import "webpack-dev-server"
 
-const module = {
-    mode: "development",
+
+const isProd = process.env.NODE_ENV === "production"
+
+const module: webpack.Configuration = {
+    mode: isProd ? "production" : "development",
     entry: "./src/index.tsx",
     output: {
         path: path.resolve(path.resolve(), "dist"),
@@ -12,15 +18,18 @@ const module = {
     devServer: {
         port: 3000
     },
+    resolve: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
+    },
     plugins: [
         new CleanWebpackPlugin(),
-        new htmlWebpackPlugin({ template: "./src/index.html" })
+        new htmlWebpackPlugin({ template: "./src/index.html" }),
     ],
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: "ts-loader",
+                use: "babel-loader",
                 exclude: /node_modules/
             },
             {
@@ -30,19 +39,23 @@ const module = {
             {
                 test: /\.(jpg|jpeg|png|svg)/,
                 use: ["file-loader"]
-            },
-            // {
-            //     test: /\.m?js$/,
-            //     exclude: /node_modules/,
-            //     use: {
-            //         loader: "babel-loader",
-            //         options: {
-            //             presets: ['@babel/preset-env']
-            //         }
-            //     }
-            // }
+            }
         ]
     }
+}
+
+if (isProd) {
+    module.optimization = {
+        minimizer: [new terserWebpackPlugin()],
+    };
+}
+else {
+    module.devServer = {
+        port: 3000,
+        open: true,
+        hot: true,
+        compress: true,
+    };
 }
 
 export default module

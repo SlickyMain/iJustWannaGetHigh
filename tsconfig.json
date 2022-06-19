@@ -1,11 +1,19 @@
 {
     "compilerOptions": {
-        "baseUrl": "src",
+        "outDir": "./build",
+        "moduleResolution": "Node",
+        "strict": true,
         "target": "ES5",
         "allowJs": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "module": "CommonJS",
         "jsx": "react"
-    }
+    },
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "./build/**/*"
+    ]
 }
