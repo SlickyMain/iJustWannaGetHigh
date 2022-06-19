@@ -4,7 +4,7 @@ import htmlWebpackPlugin from "html-webpack-plugin"
 
 const module = {
     mode: "development",
-    entry: "./src/index.js",
+    entry: "./src/index.tsx",
     output: {
         path: path.resolve(path.resolve(), "dist"),
         filename: "bundle.js"
@@ -19,6 +19,11 @@ const module = {
     module: {
         rules: [
             {
+                test: /\.tsx?$/,
+                use: "ts-loader",
+                exclude: /node_modules/
+            },
+            {
                 test: /\.(css|scss)$/,
                 use: ["style-loader", "css-loader", "sass-loader"]
             },
@@ -26,16 +31,16 @@ const module = {
                 test: /\.(jpg|jpeg|png|svg)/,
                 use: ["file-loader"]
             },
-            {
-                test: /\.m?js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            }
+            // {
+            //     test: /\.m?js$/,
+            //     exclude: /node_modules/,
+            //     use: {
+            //         loader: "babel-loader",
+            //         options: {
+            //             presets: ['@babel/preset-env']
+            //         }
+            //     }
+            // }
         ]
     }
 }
