@@ -23,7 +23,7 @@ const module: webpack.Configuration = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new htmlWebpackPlugin({ template: "./src/index.html" }),
+        new htmlWebpackPlugin({ template: "./public/index.html" }),
     ],
     module: {
         rules: [
